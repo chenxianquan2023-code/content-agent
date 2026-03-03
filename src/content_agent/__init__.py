@@ -3,11 +3,14 @@ Content Agent - AI-powered content curation and publishing.
 Built on Agent Memory Kit.
 """
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 from .agent import ContentAgent
 from .strategy import ContentStrategy
 from .llm.generator import ContentGenerator, GenerationConfig
+from .analysis.optimal_time import OptimalTimePredictor
+from .analysis.analytics import ContentAnalytics
+from .team.collaboration import TeamManager, ApprovalWorkflow, Role, Permission
 
 try:
     from .web.dashboard import ContentDashboard, launch_dashboard
@@ -17,9 +20,15 @@ except ImportError:
 
 __all__ = [
     "ContentAgent",
-    "ContentStrategy", 
+    "ContentStrategy",
     "ContentGenerator",
     "GenerationConfig",
+    "OptimalTimePredictor",
+    "ContentAnalytics",
+    "TeamManager",
+    "ApprovalWorkflow",
+    "Role",
+    "Permission",
 ]
 
 if HAS_DASHBOARD:
