@@ -8,9 +8,20 @@ from datetime import datetime, timedelta
 from typing import List, Dict, Any, Optional
 
 # Import from agent-memory-kit
-import sys
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "agent-memory-kit" / "src"))
-from agent_memory_kit import MemoryManager
+try:
+    from agent_memory_kit import MemoryManager
+except ImportError:
+    # Try to find it in sibling directory (dev mode)
+    import sys
+    # content-agent/src/content_agent/agent.py -> content-agent/src -> content-agent -> projects -> agent-memory-kit/src
+    amk_path = Path(__file__).parent.parent.parent.parent / "agent-memory-kit" / "src"
+    if amk_path.exists():
+        sys.path.insert(0, str(amk_path))
+        from agent_memory_kit import MemoryManager
+    else:
+        raise ImportError(
+            "agent_memory_kit not found. Install it with: pip install agent-memory-kit"
+        )
 
 from .strategy import ContentStrategy
 
@@ -53,29 +64,17 @@ class ContentAgent:
         """Initialize content sources."""
         self.source_clients = {}
         
-        if "moltbook" in self.sources:
-            from .sources import MoltbookSource
-            api_key = self.memory.warm("moltbook_api_key")
-            self.source_clients["moltbook"] = MoltbookSource(api_key)
-        
-        if "clawdchat" in self.sources:
-            from .sources import ClawdchatSource
-            api_key = self.memory.warm("clawdchat_api_key")
-            self.source_clients["clawdchat"] = ClawdchatSource(api_key)
+        # TODO: Implement source modules
+        # For now, sources are not implemented yet
+        pass
     
     def _init_publishers(self):
         """Initialize platform publishers."""
         self.publishers = {}
         
-        if "moltbook" in self.platforms:
-            from .publisher import MoltbookPublisher
-            api_key = self.memory.warm("moltbook_api_key")
-            self.publishers["moltbook"] = MoltbookPublisher(api_key)
-        
-        if "clawdchat" in self.platforms:
-            from .publisher import ClawdchatPublisher
-            api_key = self.memory.warm("clawdchat_api_key")
-            self.publishers["clawdchat"] = ClawdchatPublisher(api_key)
+        # TODO: Implement publisher modules
+        # For now, publishers are not implemented yet
+        pass
     
     def daily_routine(self) -> Dict[str, Any]:
         """
